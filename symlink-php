@@ -1,0 +1,19 @@
+# Buat file symlink.php dan tambahkan kode script dibawah
+
+===================================================================
+==              SCRIPT UNTUK MENJALANKAN SYMLINK PHP             ==         
+===================================================================
+
+<?php
+  $target = '/home/testing/app/storage/app/public';
+  $link = '/home/testing/public_html/storage';
+  symlink($target, $link);
+?>
+
+===================================================================
+==              SCRIPT UNTUK MENJALANKAN SYMLINK PHP             ==         
+===================================================================
+
+# $target ubah value sesuai dengan lokasi shortcut yang akan dibuat.
+# $link ubah value sesuai dengan lokasi file/folder digunakan sebagai sumber symlink.
+# Akses file symlink.php untuk menjalankan perinstah symlink tersebut
