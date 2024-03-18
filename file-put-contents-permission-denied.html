@@ -1,0 +1,21 @@
+file_put_contents() permission denied
+
+1) If you take a look at your cache.php config file you'll see that for the file driver the storage/framework/cache/data folder is set for writing:
+
+'file' => [
+    'driver' => 'file',
+    'path' => storage_path('framework/cache/data'),
+],
+
+That means that the permissions for that folder must be properly set so that the web server user can successfully write to that folder.
+
+2) or you can just running this command for me it solved my problem
+
+php artisan cache:clear 
+chmod -R 775 storage/
+composer dump-autoload
+
+3) The stream or file "/storage/logs/laravel.log" could not be opened in append mode: failed to open stream: Permission denied
+
+sudo chmod -R ugo+rw storage
+
