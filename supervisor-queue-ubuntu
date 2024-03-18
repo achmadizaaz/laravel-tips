@@ -1,0 +1,63 @@
+1. Install Supervisor
+
+sudo apt-get install supervisor
+
+2. Sesudah selesai install supervisor, masuk ke direktori "/etc/supervisor/conf.d" dan buat file .conf
+pada contoh ini saya membuat file bernama laravel-worker.conf
+
+cd /etc/supervisor/conf.d
+sudo nano laravel-worker.conf
+
+3. Kemudian silakan paste script dibawah ini ke dalam file "laravel-worker.conf"
+
+===================================================================================
+==              SCRIPT UNTUK MENJALANKAN QUEUE DI SUPERVISOR                     ==         
+===================================================================================
+
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /PATH-LARAVEL/artisan queue:work sqs --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=USER-OWNER
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/PATH-LARAVEL/storage/logs/worker.log
+stopwaitsecs=3600
+
+===================================================================================
+==              SCRIPT UNTUK MENJALANKAN QUEUE DI SUPERVISOR                     ==         
+===================================================================================
+
+4. Selanjutnya silakan edit script diatas sesuai dengan kebutuhan anda.
+
+laravel-worker = ubah sesuai dengan nama program yang dibuat
+PATH-LARAVEL   = ubah sesuai dengan path / lokasi laravel di install
+USER-OWNER     = ubah sesuai dengan user yang sedang digunakan pada aplikasi laravelnya
+
+5. Setelah itu silakan anda simpan.
+ 
+6. Jalan perintah dibawah untuk membaca dan mengupdate supervisor
+
+sudo supervisorctl reread
+sudo supervisorctl update
+
+7. Jalankan supervisor yang telah dibuat tadi, "laravel-worker"
+
+sudo supervisorctl start laravel-worker:*
+
+8. Cek status supervisor, apakah sudah berjalan dengan baik
+
+sudo supervisorctl status
+
+9. Untuk memonitoring secara real-time supervisor queue laravel yang telah dibuat
+
+tail -f /home-path-program-laravel/storage/logs/worker.log
+
+10. Buka file .env pada aplikasi laravel. 
+Pada QUEUE_CONNECTION ubah dari sync menjadi database / redis sesuai dengan kebutuhan anda.
+
+QUEUE_CONNECTION=sync
+
