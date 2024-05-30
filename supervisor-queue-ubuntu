@@ -14,18 +14,15 @@ sudo nano laravel-worker.conf
 ==              SCRIPT UNTUK MENJALANKAN QUEUE DI SUPERVISOR                     ==         
 ===================================================================================
 
-[program:laravel-worker]
-process_name=%(program_name)s_%(process_num)02d
-command=php /PATH-LARAVEL/artisan queue:work sqs --sleep=3 --tries=3 --max-time=3600
+[program:app-worker]
+process_name=%(program_name)s_%(process_num)s
+command=php /PATH-LARAVEL/artisan queue:work --sleep=3 --tries
 autostart=true
 autorestart=true
-stopasgroup=true
-killasgroup=true
 user=USER-OWNER
-numprocs=8
+numprocs=4
 redirect_stderr=true
 stdout_logfile=/PATH-LARAVEL/storage/logs/worker.log
-stopwaitsecs=3600
 
 ===================================================================================
 ==              SCRIPT UNTUK MENJALANKAN QUEUE DI SUPERVISOR                     ==         
